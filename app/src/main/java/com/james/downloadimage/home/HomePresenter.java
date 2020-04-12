@@ -1,4 +1,4 @@
-package com.james.downlaodimage.home;
+package com.james.downloadimage.home;
 
 public class HomePresenter implements HomeContract.Presenter {
 

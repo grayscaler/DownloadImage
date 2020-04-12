@@ -1,11 +1,11 @@
-package com.james.downlaodimage.home;
+package com.james.downloadimage.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.james.downlaodimage.R;
+import com.james.downloadimage.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

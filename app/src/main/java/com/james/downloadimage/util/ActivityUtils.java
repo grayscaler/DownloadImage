@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.james.downlaodimage.util;
+package com.james.downloadimage.util;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

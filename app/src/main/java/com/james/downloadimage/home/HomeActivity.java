@@ -1,9 +1,9 @@
-package com.james.downlaodimage.home;
+package com.james.downloadimage.home;
 
 import android.os.Bundle;
 
-import com.james.downlaodimage.R;
-import com.james.downlaodimage.util.ActivityUtils;
+import com.james.downloadimage.R;
+import com.james.downloadimage.util.ActivityUtils;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;

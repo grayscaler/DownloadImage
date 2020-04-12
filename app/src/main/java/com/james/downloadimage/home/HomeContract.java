@@ -1,7 +1,7 @@
-package com.james.downlaodimage.home;
+package com.james.downloadimage.home;
 
-import com.james.downlaodimage.BasePresenter;
-import com.james.downlaodimage.BaseView;
+import com.james.downloadimage.BasePresenter;
+import com.james.downloadimage.BaseView;
 
 public interface HomeContract {
 

@@ -1,4 +1,4 @@
-package com.james.downlaodimage;
+package com.james.downloadimage;
 
 import org.junit.Test;
 
