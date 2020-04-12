@@ -1,15 +1,15 @@
-package com.james.downloadimage.colors;
+package com.james.downloadimage.photo;
 
 import com.james.downloadimage.BasePresenter;
 import com.james.downloadimage.BaseView;
 
-public interface ColorsContract {
+public interface PhotoContract {
 
     interface Presenter extends BasePresenter {
 
     }
 
-    interface View extends BaseView<ColorsContract.Presenter> {
+    interface View extends BaseView<PhotoContract.Presenter> {
 
     }
 }

@@ -1,4 +1,4 @@
-package com.james.downloadimage.colors;
+package com.james.downloadimage.photo;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,26 +11,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class ColorsFragment extends Fragment implements ColorsContract.View {
+public class PhotoFragment extends Fragment implements PhotoContract.View {
 
-    private ColorsContract.Presenter mPresenter;
+    private PhotoContract.Presenter mPresenter;
 
-    public ColorsFragment() {
+    public PhotoFragment() {
     }
 
-    public static ColorsFragment newInstance() {
-        return new ColorsFragment();
+    public static PhotoFragment newInstance() {
+        return new PhotoFragment();
     }
 
     @Override
-    public void setPresenter(ColorsContract.Presenter presenter) {
+    public void setPresenter(PhotoContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.colors_frag, container, false);
+        View root = inflater.inflate(R.layout.photo_frag, container, false);
 
         return root;
     }

@@ -1,4 +1,4 @@
-package com.james.downloadimage.colors;
+package com.james.downloadimage.photo;
 
 import android.os.Bundle;
 
@@ -9,14 +9,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class ColorsActivity extends AppCompatActivity {
+public class PhotoActivity extends AppCompatActivity {
 
-    private ColorsPresenter mColorsPresenter;
+    private PhotoPresenter mPhotoPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.colors_act);
+        setContentView(R.layout.photo_act);
 
         // Set up the toolbar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -25,12 +25,12 @@ public class ColorsActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(false);
 
-        ColorsFragment colorsFragment = (ColorsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (colorsFragment == null) {
-            colorsFragment = ColorsFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), colorsFragment, R.id.contentFrame);
+        PhotoFragment photoFragment = (PhotoFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (photoFragment == null) {
+            photoFragment = PhotoFragment.newInstance();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), photoFragment, R.id.contentFrame);
         }
 
-        mColorsPresenter = new ColorsPresenter(colorsFragment);
+        mPhotoPresenter = new PhotoPresenter(photoFragment);
     }
 }

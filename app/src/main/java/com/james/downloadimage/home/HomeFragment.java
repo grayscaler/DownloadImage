@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.james.downloadimage.R;
-import com.james.downloadimage.colors.ColorsActivity;
+import com.james.downloadimage.photo.PhotoActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     private void showColors() {
-        Intent intent = new Intent(mContext, ColorsActivity.class);
+        Intent intent = new Intent(mContext, PhotoActivity.class);
         startActivity(intent);
     }
 }

@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:spanCount="4"
-        tools:listitem="@layout/color_item" />
+        tools:listitem="@layout/photo_item" />
 
     <ProgressBar
         android:id="@+id/progressBar"
