@@ -9,4 +9,9 @@ public class HomePresenter implements HomeContract.Presenter {
 
         mView.setPresenter(this);
     }
+
+    @Override
+    public void start() {
+
+    }
 }

@@ -3,6 +3,8 @@ package com.james.downloadimage.photo;
 import android.os.Bundle;
 
 import com.james.downloadimage.R;
+import com.james.downloadimage.data.source.JsonPlaceholderRepository;
+import com.james.downloadimage.paing.PhotoPagingDataSourceFactory;
 import com.james.downloadimage.util.ActivityUtils;
 
 import androidx.appcompat.app.ActionBar;
@@ -31,6 +33,6 @@ public class PhotoActivity extends AppCompatActivity {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), photoFragment, R.id.contentFrame);
         }
 
-        mPhotoPresenter = new PhotoPresenter(photoFragment);
+        mPhotoPresenter = new PhotoPresenter(photoFragment, JsonPlaceholderRepository.getInstance(new PhotoPagingDataSourceFactory()));
     }
 }
