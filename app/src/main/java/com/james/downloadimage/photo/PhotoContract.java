@@ -5,6 +5,7 @@ import com.james.downloadimage.BaseView;
 import com.james.downloadimage.data.Photo;
 
 import androidx.paging.PagedList;
+import io.reactivex.disposables.Disposable;
 
 public interface PhotoContract {
 
@@ -17,5 +18,7 @@ public interface PhotoContract {
         void setProgressBarVisibility(int visibility);
 
         void showPhotos(PagedList<Photo> photos);
+
+        void addDisposable(Disposable disposable);
     }
 }

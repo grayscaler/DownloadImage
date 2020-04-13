@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 import static com.james.downloadimage.Constants.Constants.GRID_LAYOUT_SPAN_COUNT;
 
@@ -27,11 +29,12 @@ public class PhotoFragment extends Fragment implements PhotoContract.View {
     private Context mContext;
     private PhotoAdapter mPhotoAdapter;
     private ProgressBar mProgressBar;
+    private CompositeDisposable mCompositeDisposable;
 
     public PhotoFragment() {
     }
 
-    public static PhotoFragment newInstance() {
+    static PhotoFragment newInstance() {
         return new PhotoFragment();
     }
 
@@ -41,7 +44,7 @@ public class PhotoFragment extends Fragment implements PhotoContract.View {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
     }
@@ -49,7 +52,8 @@ public class PhotoFragment extends Fragment implements PhotoContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPhotoAdapter = new PhotoAdapter(new PhotoDiffUtils());
+        mCompositeDisposable = new CompositeDisposable();
+        mPhotoAdapter = new PhotoAdapter(new PhotoDiffUtils(), mCompositeDisposable);
     }
 
     @Nullable
@@ -74,6 +78,12 @@ public class PhotoFragment extends Fragment implements PhotoContract.View {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mCompositeDisposable.clear();
+    }
+
+    @Override
     public void setProgressBarVisibility(int visibility) {
         mProgressBar.setVisibility(visibility);
     }
@@ -81,5 +91,10 @@ public class PhotoFragment extends Fragment implements PhotoContract.View {
     @Override
     public void showPhotos(PagedList<Photo> photos) {
         mPhotoAdapter.submitList(photos);
+    }
+
+    @Override
+    public void addDisposable(Disposable disposable) {
+        mCompositeDisposable.add(disposable);
     }
 }

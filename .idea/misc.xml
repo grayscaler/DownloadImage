@@ -68,6 +68,56 @@
       <textMaps />
     </LinkMapSettings>
   </component>
+  <component name="NullableNotNullManager">
+    <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />
+    <option name="myDefaultNotNull" value="androidx.annotation.NonNull" />
+    <option name="myNullables">
+      <value>
+        <list size="12">
+          <item class="java.lang.String" index="0" itemvalue="org.jetbrains.annotations.Nullable" />
+          <item class="java.lang.String" index="1" itemvalue="javax.annotation.Nullable" />
+          <item class="java.lang.String" index="2" itemvalue="javax.annotation.CheckForNull" />
+          <item class="java.lang.String" index="3"
+              itemvalue="edu.umd.cs.findbugs.annotations.Nullable" />
+          <item class="java.lang.String" index="4"
+              itemvalue="android.support.annotation.Nullable" />
+          <item class="java.lang.String" index="5" itemvalue="androidx.annotation.Nullable" />
+          <item class="java.lang.String" index="6" itemvalue="android.annotation.Nullable" />
+          <item class="java.lang.String" index="7"
+              itemvalue="androidx.annotation.RecentlyNullable" />
+          <item class="java.lang.String" index="8"
+              itemvalue="org.checkerframework.checker.nullness.qual.Nullable" />
+          <item class="java.lang.String" index="9"
+              itemvalue="org.checkerframework.checker.nullness.compatqual.NullableDecl" />
+          <item class="java.lang.String" index="10"
+              itemvalue="org.checkerframework.checker.nullness.compatqual.NullableType" />
+          <item class="java.lang.String" index="11" itemvalue="com.android.annotations.Nullable" />
+        </list>
+      </value>
+    </option>
+    <option name="myNotNulls">
+      <value>
+        <list size="11">
+          <item class="java.lang.String" index="0" itemvalue="org.jetbrains.annotations.NotNull" />
+          <item class="java.lang.String" index="1" itemvalue="javax.annotation.Nonnull" />
+          <item class="java.lang.String" index="2"
+              itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
+          <item class="java.lang.String" index="3" itemvalue="android.support.annotation.NonNull" />
+          <item class="java.lang.String" index="4" itemvalue="androidx.annotation.NonNull" />
+          <item class="java.lang.String" index="5" itemvalue="android.annotation.NonNull" />
+          <item class="java.lang.String" index="6"
+              itemvalue="androidx.annotation.RecentlyNonNull" />
+          <item class="java.lang.String" index="7"
+              itemvalue="org.checkerframework.checker.nullness.qual.NonNull" />
+          <item class="java.lang.String" index="8"
+              itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullDecl" />
+          <item class="java.lang.String" index="9"
+              itemvalue="org.checkerframework.checker.nullness.compatqual.NonNullType" />
+          <item class="java.lang.String" index="10" itemvalue="com.android.annotations.NonNull" />
+        </list>
+      </value>
+    </option>
+  </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
       <profile-state>
