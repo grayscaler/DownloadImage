@@ -2,11 +2,11 @@ package com.james.downloadimage.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +21,7 @@ import com.james.downloadimage.util.ScreenUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 
 import androidx.annotation.NonNull;
 import androidx.core.widget.TextViewCompat;
@@ -43,12 +43,10 @@ import okhttp3.Response;
 
 public class PhotoAdapter extends PagedListAdapter<Photo, RecyclerView.ViewHolder> {
 
-    public static final String TAG = PhotoAdapter.class.getSimpleName();
-
     private Context mContext;
     private CompositeDisposable mCompositeDisposable;
     private SparseArray<Disposable> mRequestDisposable = new SparseArray<>();
-    private SparseArray<SoftReference<Drawable>> mPhotoThumbnailsCache = new SparseArray<>();
+    private SparseArray<WeakReference<Drawable>> mPhotoThumbnailsCache = new SparseArray<>();
 
     public PhotoAdapter(PhotoDiffUtils photoDiffUtils, CompositeDisposable compositeDisposable) {
         super(photoDiffUtils);
@@ -100,94 +98,53 @@ public class PhotoAdapter extends PagedListAdapter<Photo, RecyclerView.ViewHolde
 
         photoViewHolder.mImage.setImageDrawable(null);
 
-//        Observable.just(photoId)
-//                .map(new Function<Integer, SoftReference<Drawable>>() {
-//                    @Override
-//                    public SoftReference<Drawable> apply(Integer integer){
-//                        SoftReference<Drawable> drawableSoftReference = mPhotoThumbnailsCache.get(integer);
-//                        if (drawableSoftReference == null || drawableSoftReference.get() == null) {
-//                            if (photo != null) {
-//                                loadDrawableFromUrl(photo, photoViewHolder);
-//                            }
-//                            return null;
-//                        } else {
-//                            return mPhotoThumbnailsCache.get(integer);
-//                        }
-//                    }
-//                })
-//                .subscribeOn(Schedulers.computation())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Consumer<SoftReference<Drawable>>() {
-//                    @Override
-//                    public void accept(SoftReference<Drawable> drawableSoftReference){
-//                        if (drawableSoftReference != null) {
-//                            photoViewHolder.mImage.setImageDrawable(drawableSoftReference.get());
-//                        }
-//                    }
-//                }).dispose();
+        final int finalPhotoId = photoId;
+        Disposable disposable = Observable.create(new ObservableOnSubscribe<Drawable>() {
+            @Override
+            public void subscribe(final ObservableEmitter<Drawable> e) throws Exception {
+                WeakReference<Drawable> drawableSoftReference = mPhotoThumbnailsCache.get(finalPhotoId);
+                if (drawableSoftReference == null || drawableSoftReference.get() == null) {
+                    if (photo != null) {
+                        OkHttpClient okHttpClient = new OkHttpClient();
+                        okHttpClient.newCall(new Request.Builder().url(photo.getThumbnailUrl()).build())
+                                .enqueue(new Callback() {
+                                    @Override
+                                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                                    }
 
-        SoftReference<Drawable> drawableWeakReference = mPhotoThumbnailsCache.get(photoId);
-        if (drawableWeakReference == null || drawableWeakReference.get() == null) {
-            Log.d(TAG, "onBindViewHolder: drawableWeakReference == null id:" + photoId);
-            if (photo != null) {
-                loadDrawableFromUrl(photo, photoViewHolder);
+                                    @Override
+                                    public void onResponse(@NonNull Call call, @NonNull Response response) {
+                                        if (response.isSuccessful()) {
+                                            if (response.body() != null) {
+                                                InputStream inputStream = response.body().byteStream();
+                                                BitmapFactory.Options bitmapLoadingOptions = new BitmapFactory.Options();
+                                                bitmapLoadingOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+                                                Drawable drawable = new BitmapDrawable(Resources.getSystem(), BitmapFactory.decodeStream(inputStream, null, bitmapLoadingOptions));
+                                                e.onNext(drawable);
+                                            }
+                                        }
+                                    }
+                                });
+                    }
+                } else {
+                    e.onNext(drawableSoftReference.get());
+                }
             }
-        } else {
-            Log.d(TAG, "onBindViewHolder: drawableWeakReference != null id:" + photoId);
-            photoViewHolder.mImage.setImageDrawable(drawableWeakReference.get());
-        }
-
-        photoViewHolder.mId.setText(String.valueOf(photoId));
-        photoViewHolder.mTitle.setText(photoTitle);
-    }
-
-    private void loadDrawableFromUrl(final Photo photo, final PhotoViewHolder photoViewHolder) {
-        Disposable disposable = drawableFromUrl(photo.getThumbnailUrl())
+        })
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Drawable>() {
                     @Override
-                    public void accept(Drawable drawable) {
-                        Log.d(TAG, "accept: drawable:" + drawable + " photo.getId():" + photo.getId());
+                    public void accept(Drawable drawable) throws Exception {
                         photoViewHolder.mImage.setImageDrawable(drawable);
-                        mPhotoThumbnailsCache.put(photo.getId(), new SoftReference<>(drawable));
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) {
-                        Log.e(TAG, "accept: throwable:" + throwable);
                     }
                 });
+
         mCompositeDisposable.add(disposable);
         mRequestDisposable.put(photo.getId(), disposable);
-    }
 
-    private Observable<Drawable> drawableFromUrl(final String url) {
-        return Observable.create(new ObservableOnSubscribe<Drawable>() {
-            @Override
-            public void subscribe(final ObservableEmitter<Drawable> e) {
-                OkHttpClient okHttpClient = new OkHttpClient();
-                okHttpClient.newCall(new Request.Builder().url(url).build())
-                        .enqueue(new Callback() {
-                            @Override
-                            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                                Log.e(TAG, "onFailure: e:" + e);
-                            }
-
-                            @Override
-                            public void onResponse(@NonNull Call call, @NonNull Response response) {
-                                if (response.isSuccessful()) {
-                                    if (response.body() != null) {
-                                        InputStream inputStream = response.body().byteStream();
-                                        Drawable drawable = new BitmapDrawable(Resources.getSystem(), BitmapFactory.decodeStream(inputStream));
-                                        Log.d(TAG, "onResponse: response.toString():" + response.toString());
-                                        e.onNext(drawable);
-                                    }
-                                }
-                            }
-                        });
-            }
-        });
+        photoViewHolder.mId.setText(String.valueOf(photoId));
+        photoViewHolder.mTitle.setText(photoTitle);
     }
 
     private class PhotoViewHolder extends RecyclerView.ViewHolder {
